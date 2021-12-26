@@ -14,7 +14,7 @@ cleanup:
 - /lib/cmake
 - /lib/debug
 - /lib/pkg-config
-- /share
+- /share/aclocal
 - "*.a"
 
 modules:
@@ -102,3 +102,17 @@ modules:
     builddir: true
     config-opts:
     - -DCMAKE_BUILD_TYPE=Release
+
+  - name: launcher
+    sources:
+    - type: file
+      path: ja2003.desktop
+    - type: file
+      url: https://raw.githubusercontent.com/christianrauch/Jahresarbeit-2003/master/icon1.svg
+      sha256: 911dbd92eb76cc8534e2210b68836b7e3a1e2a3672bfe47e6e211134d81eeffe
+    buildsystem: simple
+    build-commands:
+    - install -d /app/share/applications
+    - install -m644 ja2003.desktop /app/share/applications/com.github.christianrauch.Jahresarbeit-2003.desktop
+    - install -d /app/share/icons
+    - install -m644 icon1.svg /app/share/icons/com.github.christianrauch.Jahresarbeit-2003.svg
