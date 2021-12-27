@@ -1,0 +1,80 @@
+app-id: org.qt_project.qtcreator
+runtime: org.kde.Sdk
+runtime-version: "6.2"
+sdk: org.kde.Sdk
+command: qtcreator
+# Qt Creator already provides desktop launchers and AppData metadata
+# but since we cannot use the original AppID, we have to rename the original files
+rename-desktop-file: org.qt-project.qtcreator.desktop
+rename-appdata-file: org.qt-project.qtcreator.appdata.xml
+rename-icon: QtProject-qtcreator
+finish-args:
+# Qt Creator crashes GNOME Shell 3.36 on Wayland
+# - --socket=wayland
+# - --socket=fallback-x11
+- --socket=x11
+- --share=ipc
+- --share=network
+- --device=dri
+- --filesystem=host
+cleanup:
+- /include
+- /lib/arch
+- /lib/cmake
+- /lib/libQt6Core5Compat.prl
+- /lib/metatypes
+- /lib/qtcreator/objects-RelWithDebInfo
+- /lib/x86_64-linux-gnu
+- /mkspecs
+- /modules
+- /qml
+- "*.a"
+cleanup-commands:
+- mv /app/lib/*-linux-gnu/* /app/lib/
+
+modules:
+# addition Qt modules that are not part of the KDE SDK
+- name: qt5compat
+  sources:
+  - type: git
+    url: git://code.qt.io/qt/qt5compat.git
+    tag: v6.2.1
+  buildsystem: cmake-ninja
+  builddir: true
+  post-install:
+  # move cmake files into a known path because we cannot determine the arch triplet
+  # (i.e. "x86_64-linux-gnu") using shell commands or environment variables
+  - mkdir /app/lib/arch/
+  - mv /app/lib/*-linux-gnu/cmake /app/lib/arch/
+
+- name: QtCreator
+  sources:
+  - type: git
+    url: git://code.qt.io/qt-creator/qt-creator.git
+    tag: v6.0.1
+  buildsystem: simple
+  build-commands:
+  # run cmake manually to install the "Devel" component for plugin development
+  - cmake -GNinja -B ${FLATPAK_BUILDER_BUILDDIR} -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQt6Core5Compat_DIR=/app/lib/arch/cmake/Qt6Core5Compat/
+  # - cmake -GNinja -B ${FLATPAK_BUILDER_BUILDDIR} -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQt6Core5Compat_DIR=/app/lib/arch/cmake/Qt6Core5Compat/ -DBUILD_PLUGINS_BY_DEFAULT:BOOL=OFF -DBUILD_EXECUTABLE_BUILDOUTPUTPARSER:BOOL=OFF -DBUILD_EXECUTABLE_CPASTER:BOOL=OFF -DBUILD_EXECUTABLE_CPLUSPLUS-KEYWORDGEN:BOOL=OFF -DBUILD_EXECUTABLE_QML2PUPPET:BOOL=OFF -DBUILD_LIBRARY_AGGREGATION=ON -DBUILD_LIBRARY_EXTENSIONSYSTEM=ON -DBUILD_LIBRARY_UTILS=ON
+  - cmake --build ${FLATPAK_BUILDER_BUILDDIR}
+  - cmake --install ${FLATPAK_BUILDER_BUILDDIR} --prefix=/app
+  # buildsystem: cmake-ninja
+  # builddir: true
+  # config-opts:
+  # - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  # - -DQt6Core5Compat_DIR=/app/lib/arch/cmake/Qt6Core5Compat/
+  # - -DBUILD_PLUGINS_BY_DEFAULT:BOOL=OFF
+  # - -DBUILD_EXECUTABLE_BUILDOUTPUTPARSER:BOOL=OFF
+  # - -DBUILD_EXECUTABLE_CPASTER:BOOL=OFF
+  # - -DBUILD_EXECUTABLE_CPLUSPLUS-KEYWORDGEN:BOOL=OFF
+  # - -DBUILD_EXECUTABLE_QML2PUPPET:BOOL=OFF
+  # - -DBUILD_LIBRARY_AGGREGATION=ON
+  # - -DBUILD_LIBRARY_EXTENSIONSYSTEM=ON
+  # - -DBUILD_LIBRARY_UTILS=ON
+  # - -DCMAKE_VERBOSE_MAKEFILE=ON
+  post-install:
+  - cmake --install ${FLATPAK_BUILDER_BUILDDIR} --prefix=/app --component Devel
+  # set release data manually
+  # ideally, this can be extracted via 'git for-each-ref --format="%(creatordate:format:%Y-%m-%d)" "refs/tags/v6.0.1"'
+  - sed -i 's/<release version="6.0.1">/<release date="2021-12-26" version="6.0.1">/g' /app/share/metainfo/org.qt-project.qtcreator.appdata.xml
