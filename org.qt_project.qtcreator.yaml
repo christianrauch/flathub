@@ -78,3 +78,27 @@ modules:
   # set release data manually
   # ideally, this can be extracted via 'git for-each-ref --format="%(creatordate:format:%Y-%m-%d)" "refs/tags/v6.0.1"'
   - sed -i 's/<release version="6.0.1">/<release date="2021-12-26" version="6.0.1">/g' /app/share/metainfo/org.qt-project.qtcreator.appdata.xml
+
+- name: yaml-cpp
+  sources:
+  - type: git
+    url: https://github.com/jbeder/yaml-cpp.git
+    tag: "yaml-cpp-0.7.0"
+  buildsystem: cmake-ninja
+  builddir: true
+  config-opts:
+  - -DCMAKE_BUILD_TYPE=Release
+  - -DBUILD_SHARED_LIBS=OFF
+  - -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+  - -DYAML_CPP_BUILD_TESTS=OFF
+
+- name: ROS-QtCreator-Plugin
+  sources:
+  - type: git
+    url: https://github.com/ros-industrial/ros_qtc_plugin.git
+    tag: "0.5.0"
+  buildsystem: cmake-ninja
+  builddir: true
+  config-opts:
+  - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  - -DQt6Core5Compat_DIR=/app/lib/arch/cmake/Qt6Core5Compat/
