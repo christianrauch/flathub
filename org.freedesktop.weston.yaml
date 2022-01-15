@@ -86,9 +86,11 @@ modules:
 
 - name: weston
   sources:
-  - type: git
-    url: https://gitlab.freedesktop.org/wayland/weston.git
-    tag: "10.0.0"
+  # - type: git
+  #   url: https://gitlab.freedesktop.org/wayland/weston.git
+  #   tag: "10.0.0"
+  - type: dir
+    path: /home/christian/Development/weston/
   buildsystem: meson
   builddir: true
   config-opts:
