@@ -8,6 +8,10 @@ rename-icon: wayland
 finish-args:
 - --socket=wayland
 - --device=dri
+- --socket=system-bus
+- --socket=session-bus
+- --device=all
+- --talk-name=org.freedesktop.login1
 - --filesystem=/run/user/
 - --talk-name=org.freedesktop.Flatpak
 cleanup:
