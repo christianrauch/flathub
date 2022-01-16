@@ -1,0 +1,62 @@
+app-id: org.gnome.mutter
+runtime: org.gnome.Platform
+runtime-version: "41"
+sdk: org.gnome.Sdk
+command: mutter
+
+modules:
+- name: geocode-glib
+  sources:
+  - type: git
+    url: https://gitlab.gnome.org/GNOME/geocode-glib.git
+    tag: "3.26.2"
+  buildsystem: meson
+  builddir: true
+
+- name: gnome-desktop
+  sources:
+  - type: git
+    url: https://gitlab.gnome.org/GNOME/gnome-desktop.git
+    tag: "41.3"
+  buildsystem: meson
+  builddir: true
+
+- name: libgweather
+  sources:
+  - type: git
+    url: https://gitlab.gnome.org/GNOME/libgweather.git
+    tag: "40.0"
+  buildsystem: meson
+  builddir: true
+
+- name: libcanberra
+  sources:
+  - type: git
+    url: git://git.0pointer.de/libcanberra
+    tag: "v0.30"
+  buildsystem: autotools
+  builddir: true
+  # buildsystem: simple
+  # build-commands:
+  # - ./autogen.sh
+  # - ./configure
+  # - make -j install
+  config-opts:
+  - --disable-lynx
+  - --disable-gtk-doc
+
+- name: gnome-settings-daemon
+  sources:
+  - type: git
+    url: https://gitlab.gnome.org/GNOME/gnome-settings-daemon.git
+    tag: "41.0"
+  buildsystem: meson
+  builddir: true
+
+- name: mutter
+  sources:
+  - type: git
+    url: https://gitlab.gnome.org/GNOME/mutter.git
+    tag: "41.3"
+  buildsystem: meson
+  builddir: true
