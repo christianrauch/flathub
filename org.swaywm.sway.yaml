@@ -1,0 +1,101 @@
+app-id: org.swaywm.sway
+runtime: org.freedesktop.Platform
+runtime-version: "21.08"
+sdk: org.freedesktop.Sdk
+command: sway
+finish-args:
+- --socket=wayland
+- --device=dri
+- --socket=system-bus
+- --socket=session-bus
+- --device=all
+
+modules:
+- name: json-c
+  sources:
+  - type: git
+    url: https://github.com/json-c/json-c.git
+    tag: "json-c-0.15-20200726"
+  buildsystem: cmake-ninja
+  builddir: true
+
+- name: check
+  sources:
+  - type: git
+    url: https://github.com/libcheck/check.git
+    tag: "0.15.2"
+  buildsystem: cmake-ninja
+  builddir: true
+
+- name: libevdev
+  sources:
+  - type: git
+    url: https://gitlab.freedesktop.org/libevdev/libevdev.git
+    tag: "libevdev-1.12.0"
+  buildsystem: meson
+  builddir: true
+
+- name: mtdev
+  sources:
+  - type: git
+    url: http://bitmath.org/git/mtdev.git
+    tag: "v1.1.6"
+    # fatal: dumb http transport does not support shallow capabilities
+    disable-shallow-clone: true
+  buildsystem: autotools
+
+- name: libinput
+  sources:
+  - type: git
+    url: https://gitlab.freedesktop.org/libinput/libinput.git
+    tag: "1.19.3"
+  buildsystem: meson
+  builddir: true
+  config-opts:
+  - -Dlibwacom=false
+  - -Ddebug-gui=false
+  - -Dtests=false
+
+- name: wayland
+  sources:
+  - type: git
+    url: https://gitlab.freedesktop.org/wayland/wayland.git
+    tag: "1.20.0"
+  buildsystem: meson
+  builddir: true
+  config-opts:
+  - -Dtests=false
+  - -Ddocumentation=false
+  - -Ddtd_validation=false
+
+- name: drm
+  sources:
+  - type: git
+    url: https://gitlab.freedesktop.org/mesa/drm.git
+    tag: "libdrm-2.4.109"
+  buildsystem: meson
+  builddir: true
+
+- name: seat
+  sources:
+  - type: git
+    url: https://git.sr.ht/~kennylevinsen/seatd
+    tag: "0.6.3"
+  buildsystem: meson
+  builddir: true
+
+- name: wlroots
+  sources:
+  - type: git
+    url: https://gitlab.freedesktop.org/wlroots/wlroots.git
+    tag: "0.14.1"
+  buildsystem: meson
+  builddir: true
+
+- name: sway
+  sources:
+  - type: git
+    url: https://github.com/swaywm/sway.git
+    tag: "1.6.1"
+  buildsystem: meson
+  builddir: true
