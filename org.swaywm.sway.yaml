@@ -92,6 +92,17 @@ modules:
   buildsystem: meson
   builddir: true
 
+- name: tinywl
+  sources:
+  - type: git
+    url: https://gitlab.freedesktop.org/wlroots/wlroots.git
+    tag: "0.14.1"
+  buildsystem: simple
+  subdir: tinywl
+  build-commands:
+  - make -j
+  - cp tinywl /app/bin/tinywl
+
 - name: sway
   sources:
   - type: git
