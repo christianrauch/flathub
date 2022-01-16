@@ -110,3 +110,23 @@ modules:
     tag: "1.6.1"
   buildsystem: meson
   builddir: true
+
+- name: launcher-tinywl
+  sources:
+  - type: script
+    dest-filename: tinywl-launch
+    commands:
+    - seatd-launch -- tinywl
+  buildsystem: simple
+  build-commands:
+  - cp tinywl-launch /app/bin/tinywl-launch
+
+- name: launcher-sway
+  sources:
+  - type: script
+    dest-filename: sway-launch
+    commands:
+    - seatd-launch -- sway
+  buildsystem: simple
+  build-commands:
+  - cp sway-launch /app/bin/sway-launch
