@@ -42,6 +42,41 @@ modules:
   - --disable-gtk-doc
   - --disable-oss
 
+- name: polkit
+  sources:
+  - type: git
+    url: https://gitlab.freedesktop.org/polkit/polkit.git
+    tag: "0.120"
+  buildsystem: meson
+  builddir: true
+  config-opts:
+  - -Dauthfw=shadow
+
+- name: systemd
+  sources:
+  - type: git
+    url: https://github.com/systemd/systemd.git
+    tag: "v250"
+  # subdir: src/udev
+  buildsystem: meson
+  builddir: true
+
+# - name: udev
+#   sources:
+#   - type: git
+#     url: https://github.com/eudev-project/eudev.git
+#     tag: "v3.2.11"
+#   buildsystem: autotools
+#   builddir: true
+
+- name: upower
+  sources:
+  - type: git
+    url: https://gitlab.freedesktop.org/upower/upower.git
+    tag: "v0.99.15"
+  buildsystem: meson
+  builddir: true
+
 - name: gnome-settings-daemon
   sources:
   - type: git
