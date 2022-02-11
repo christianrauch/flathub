@@ -33,17 +33,14 @@ modules:
   sources:
   - type: git
     url: git://git.0pointer.de/libcanberra
-    tag: "v0.30"
+    # tag: "v0.30"
+    commit: c0620e432650e81062c1967cc669829dbd29b310
   buildsystem: autotools
   builddir: true
-  # buildsystem: simple
-  # build-commands:
-  # - ./autogen.sh
-  # - ./configure
-  # - make -j install
   config-opts:
   - --disable-lynx
   - --disable-gtk-doc
+  - --disable-oss
 
 - name: gnome-settings-daemon
   sources:
