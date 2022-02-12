@@ -11,6 +11,8 @@ finish-args:
 - --device=all
 
 modules:
+- python3-meson.json
+
 - name: json-c
   sources:
   - type: git
