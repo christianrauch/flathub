@@ -11,7 +11,7 @@ finish-args:
 - --device=all
 
 modules:
-- python3-meson.json
+# - python3-meson.json
 
 - name: json-c
   sources:
@@ -91,14 +91,19 @@ modules:
   - type: git
     url: https://gitlab.freedesktop.org/wlroots/wlroots.git
     tag: "0.14.1"
+    # tag: "0.15.1"
   buildsystem: meson
   builddir: true
+  config-opts:
+  - -Dexamples=false
+  # - -Drenderers=gles2
 
 - name: tinywl
   sources:
   - type: git
     url: https://gitlab.freedesktop.org/wlroots/wlroots.git
     tag: "0.14.1"
+    # tag: "0.15.1"
   buildsystem: simple
   subdir: tinywl
   build-commands:
@@ -110,6 +115,7 @@ modules:
   - type: git
     url: https://github.com/swaywm/sway.git
     tag: "1.6.1"
+    # tag: "1.7"
   buildsystem: meson
   builddir: true
 
