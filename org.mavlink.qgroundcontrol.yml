@@ -3,7 +3,6 @@ runtime: org.kde.Platform
 runtime-version: '5.15-22.08'
 sdk: org.kde.Sdk
 command: QGroundControl
-rename-appdata-file: org.mavlink.qgroundcontrol.metainfo.xml
 
 finish-args:
 - --socket=wayland
@@ -12,15 +11,6 @@ finish-args:
 - --device=dri
 - --share=ipc
 - --share=network
-
-cleanup:
-- /include
-- /bin/dbf*
-- /bin/shp*
-- /lib/cmake
-- /share/shapelib
-- "*.a"
-- "*.cmake"
 
 modules:
   - name: QGroundControl
@@ -33,11 +23,20 @@ modules:
     config-opts:
     - -D BUILD_SHARED_LIBS=OFF
     - -D OpenGL_GL_PREFERENCE=GLVND
+    cleanup:
+    - /include
+    - /bin/dbf*
+    - /bin/shp*
+    - /lib/cmake
+    - /share/shapelib
+    - "*.a"
+    - "*.cmake"
+    - /share/metainfo/org.mavlink.qgroundcontrol.metainfo.xml
 
   - name: appdata
     sources:
     - type: file
-      path: update_appdata.sh
+      path: org.mavlink.qgroundcontrol.metainfo.xml
     buildsystem: simple
     build-commands:
-    - ./update_appdata.sh /app/share/metainfo/org.mavlink.qgroundcontrol.metainfo.xml
+    - install -D org.mavlink.qgroundcontrol.metainfo.xml /app/share/metainfo/org.mavlink.qgroundcontrol.metainfo.xml
